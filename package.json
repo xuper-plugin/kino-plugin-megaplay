@@ -1,0 +1,12 @@
+{
+  "name": "kino-plugin-megaplay",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/plugin.js --bundle --format=esm --target=es2020 --loader:.png=dataurl --outfile=plugin.js",
+    "icon": "node scripts/make-icon.mjs",
+    "test": "node --test test/*.test.mjs",
+    "package": "npm run build && node scripts/package.mjs"
+  },
+  "devDependencies": { "esbuild": "^0.21.0" }
+}
