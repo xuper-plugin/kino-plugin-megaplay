@@ -45,7 +45,7 @@ export const TABS = {
 };
 export const TAB_IDS = Object.keys(TABS);
 const TAB_KEYS = { inicio: "tabHome", series: "tabSeries", peliculas: "tabMovies" };
-export const HOME_ROWS = ["tv-popular", "tv-airing", "movie-popular"];
+export const HOME_ROWS = ["tv-airing", "tv-popular", "movie-popular"]; // airing first: what is new leads
 
 /** One page of row [id] as `{ items, next }`. */
 export async function rowPage(id, page = 1) {

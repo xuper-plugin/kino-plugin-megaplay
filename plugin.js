@@ -298,7 +298,7 @@ var TABS = {
 };
 var TAB_IDS = Object.keys(TABS);
 var TAB_KEYS = { inicio: "tabHome", series: "tabSeries", peliculas: "tabMovies" };
-var HOME_ROWS = ["tv-popular", "tv-airing", "movie-popular"];
+var HOME_ROWS = ["tv-airing", "tv-popular", "movie-popular"];
 async function rowPage(id, page = 1) {
   const row = ROWS[id];
   if (!row) return { items: [] };

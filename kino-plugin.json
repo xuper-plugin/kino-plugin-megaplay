@@ -1,7 +1,7 @@
 {
   "id": "megaplay",
   "name": "Megaplay",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "apiVersion": 9,
   "streamHosts": "any",
   "entry": "plugin.js",
@@ -151,6 +151,6 @@
   },
   "signature": {
     "authorKey": "6693946bd5c56196960959c4b9665fad5094374bcb85ddb282f8bf762c835263",
-    "value": "f1f209ceb7eb97edbe2c75c24a374aff927e155e02d8d9f8f9571fefb96464d06bf2c1778024e6559bd84e6e5531c69b81fdab05e167cceecc7504a712308d0d"
+    "value": "ebe942a8132e2f7321b2c8974e8cfccc5856eb480866dab227fe5ddd27a0e028e2d6d639ff4cd69e0d4b7f01b64092ce59f214f3533ce70aff0000f8f940f60b"
   }
 }

@@ -106,3 +106,15 @@ test("the committed plugin.js is a fresh build of src/", () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("the Home rows are all typed anime and the airing row leads", async () => {
+  const keep = globalThis.kino;
+  globalThis.kino = { lang: "es", log() {}, error: (c, m) => new Error(m), tmdb: async () => ({ page: 1, total_pages: 1, results: [{ id: 1, name: "A", original_language: "ja", genre_ids: [16], poster_path: "/a.jpg" }] }) };
+  try {
+    const { HOME_ROWS, buildRows } = await import("../src/catalog.js");
+    const rows = await buildRows(HOME_ROWS);
+    assert.equal(rows[0].id, "tv-airing");
+    assert.ok(rows.length >= 2);
+    for (const r of rows) assert.equal(r.genre, "anime", r.id);
+  } finally { globalThis.kino = keep; }
+});
