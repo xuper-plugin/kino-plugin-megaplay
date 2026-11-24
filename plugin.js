@@ -1,3 +1,37 @@
+// src/door.js
+var CATALOG_MAX = 40;
+var OVERVIEW_MAX = 300;
+var HTTPS = /^https:\/\//;
+function catalogItems(found) {
+  const out = [];
+  const list = Array.isArray(found) ? found : found && Array.isArray(found.items) ? found.items : [];
+  for (const it of list) {
+    if (out.length >= CATALOG_MAX) break;
+    if (!it || typeof it.id !== "string" || !it.id || typeof it.ref !== "string" || !it.ref || typeof it.title !== "string" || !it.title) continue;
+    const item = { id: it.id, ref: it.ref, title: it.title, kind: typeof it.kind === "string" && it.kind ? it.kind : "movie" };
+    if (typeof it.poster === "string" && HTTPS.test(it.poster)) item.poster = it.poster;
+    if (typeof it.backdrop === "string" && HTTPS.test(it.backdrop)) item.backdrop = it.backdrop;
+    if (it.year !== void 0 && it.year !== null && String(it.year)) item.year = String(it.year);
+    if (typeof it.overview === "string" && it.overview.trim()) item.overview = it.overview.trim().slice(0, OVERVIEW_MAX);
+    const tmdb2 = it.ids && Number.isInteger(it.ids.tmdb) ? it.ids.tmdb : Number.isInteger(it.tmdb) ? it.tmdb : 0;
+    if (tmdb2 > 0) item.tmdb = tmdb2;
+    out.push(item);
+  }
+  return out;
+}
+function catalogQuery(arg) {
+  const q = String(arg && arg.q || "").trim().slice(0, 200);
+  const type = arg && (arg.type === "movie" || arg.type === "series") ? arg.type : "any";
+  return { q, type, season: 0, episode: 0, tmdbId: 0, year: 0, originalTitle: "", altTitles: [], cursor: null };
+}
+function catalogDoor(search2) {
+  return async (arg) => {
+    const query = catalogQuery(arg);
+    if (!query.q) return [];
+    return catalogItems(await search2(query));
+  };
+}
+
 // src/i18n.js
 var WORDS = {
   es: {
@@ -545,11 +579,11 @@ var MAX_SLIDES = 6;
 var MAX_RAILS = 8;
 var MAX_RAIL_ITEMS = 20;
 var MAX_SLIDE_TEXT = 160;
-var HTTPS = /^https:\/\//;
+var HTTPS2 = /^https:\/\//;
 function cardOf(item) {
   const out = { id: item.id, ref: item.ref, title: item.title, kind: item.kind };
-  if (item.poster && HTTPS.test(item.poster)) out.poster = item.poster;
-  if (item.backdrop && HTTPS.test(item.backdrop)) out.backdrop = item.backdrop;
+  if (item.poster && HTTPS2.test(item.poster)) out.poster = item.poster;
+  if (item.backdrop && HTTPS2.test(item.backdrop)) out.backdrop = item.backdrop;
   if (item.rating !== void 0) out.rating = item.rating;
   if (item.year !== void 0) out.year = item.year;
   if (item.ids && item.ids.tmdb) out.ids = { tmdb: item.ids.tmdb };
@@ -561,7 +595,7 @@ function slidesOf(rows) {
   for (const row of rows) {
     for (const item of row.items) {
       if (out.length >= MAX_SLIDES) return out;
-      if (seen.has(item.id) || !item.backdrop || !HTTPS.test(item.backdrop)) continue;
+      if (seen.has(item.id) || !item.backdrop || !HTTPS2.test(item.backdrop)) continue;
       const text = typeof item.overview === "string" ? item.overview.trim() : "";
       if (text === "") continue;
       seen.add(item.id);
@@ -647,7 +681,7 @@ var logoNode = () => ({
 });
 
 // src/browse/detail.js
-var HTTPS2 = /^https:\/\//;
+var HTTPS3 = /^https:\/\//;
 var MAX_EPISODES = 80;
 var MAX_CAST = 12;
 var LEAD_MAX = 140;
@@ -661,7 +695,7 @@ var num = (v) => {
   const n = parseInt(v, 10);
   return Number.isFinite(n) ? n : 0;
 };
-var https = (v) => typeof v === "string" && HTTPS2.test(v) && v.length <= 2048 ? v : void 0;
+var https = (v) => typeof v === "string" && HTTPS3.test(v) && v.length <= 2048 ? v : void 0;
 var tmdbLang = () => langOf() === "en" ? "en-US" : "es-MX";
 var opensPage = (card) => !!card && (card.kind === "movie" || card.kind === "series") && typeof card.id === "string" && !!parseTitleRef(card.ref) && parseTitleRef(card.ref).kind !== "episode";
 var cardNode = (card, size, scope) => ({
@@ -1049,7 +1083,7 @@ function detailPage({ r, entry, season }) {
 var KEY = "logo1";
 var MAX = 120;
 var CALL_MS = 8e3;
-var HTTPS3 = /^https:\/\//;
+var HTTPS4 = /^https:\/\//;
 function makeLogoCache({ kino: kino2, clock = { now: () => Date.now() } }) {
   const usable = () => {
     try {
@@ -1079,7 +1113,7 @@ function makeLogoCache({ kino: kino2, clock = { now: () => Date.now() } }) {
   }
   function logoOf(id) {
     const l = read()[id];
-    return typeof l === "string" && HTTPS3.test(l) ? l : void 0;
+    return typeof l === "string" && HTTPS4.test(l) ? l : void 0;
   }
   async function fill2(slides, budgetMs) {
     if (!usable()) return 0;
@@ -1364,6 +1398,7 @@ function makeBrowse({ kino: kino2, loadTab, searchTitles }) {
 
 // src/plugin.js
 var tmdbFailure = (e) => e && ["timeout", "network", "unavailable", "rate_limited"].includes(e.code) ? kino.error("unavailable", "tmdb: " + e.code, { userMessage: t("tmdbDown") }) : e;
+var proto_catalog_search = catalogDoor(search);
 async function search(query) {
   const q = typeof query === "string" ? query : query && query.q || "";
   let items;
@@ -1444,6 +1479,7 @@ export {
   categories,
   episodes,
   home,
+  proto_catalog_search,
   resolve,
   screen,
   screenEvent,

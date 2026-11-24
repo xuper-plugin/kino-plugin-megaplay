@@ -1,7 +1,7 @@
 {
   "id": "megaplay",
   "name": "Megaplay",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "apiVersion": 9,
   "streamHosts": "any",
   "entry": "plugin.js",
@@ -10,7 +10,9 @@
   "author": "xuper-plugin",
   "homepage": "https://github.com/xuper-plugin/kino-plugin-megaplay",
   "color": "#7C3AED",
-  "categories": ["anime"],
+  "categories": [
+    "anime"
+  ],
   "theme": {
     "accent": "#7C3AED",
     "onAccent": "#FFFFFF",
@@ -18,14 +20,23 @@
     "surface": "#1B1430",
     "highlight": "#F0ABFC"
   },
-  "section": { "label": "Megaplay", "labelEn": "Megaplay" },
+  "section": {
+    "label": "Megaplay",
+    "labelEn": "Megaplay"
+  },
   "hosts": [
     "image.tmdb.org",
     "megaplay.buzz",
     "enc-dec.app",
     "graphql.anilist.co"
   ],
-  "capabilities": ["search", "home", "browse", "episodes", "resolve"],
+  "capabilities": [
+    "search",
+    "home",
+    "browse",
+    "episodes",
+    "resolve"
+  ],
   "settings": [
     {
       "key": "audioSection",
@@ -42,8 +53,16 @@
       "labelEn": "Preferred version",
       "default": "sub",
       "options": [
-        { "value": "sub", "label": "Subtitulado (japonés)", "labelEn": "Subtitled (Japanese)" },
-        { "value": "dub", "label": "Doblado", "labelEn": "Dubbed" }
+        {
+          "value": "sub",
+          "label": "Subtitulado (japonés)",
+          "labelEn": "Subtitled (Japanese)"
+        },
+        {
+          "value": "dub",
+          "label": "Doblado",
+          "labelEn": "Dubbed"
+        }
       ]
     },
     {
@@ -76,17 +95,62 @@
   ],
   "enhancements": {
     "14": {
-      "capabilities": ["screen"],
+      "capabilities": [
+        "screen"
+      ],
       "screen": {
         "label": "Megaplay",
         "labelEn": "Megaplay",
         "icon": "movie",
         "menuOpens": "screen",
-        "opensFrom": ["menu", "settings"],
-        "settingsButton": { "label": "Abrir Megaplay", "labelEn": "Open Megaplay" },
+        "opensFrom": [
+          "menu",
+          "settings"
+        ],
+        "settingsButton": {
+          "label": "Abrir Megaplay",
+          "labelEn": "Open Megaplay"
+        },
         "settingsIn": "both"
       }
     },
-    "19": { "capabilities": ["screen"] }
+    "19": {
+      "capabilities": [
+        "screen"
+      ]
+    },
+    "20": {
+      "provides": {
+        "catalog": {
+          "summary": "Titles this plugin finds, for the author's other plugins",
+          "calls": {
+            "search": {
+              "in": {
+                "q": "string",
+                "type": "string?"
+              },
+              "out": "Item[]"
+            }
+          },
+          "types": {
+            "Item": {
+              "id": "string",
+              "ref": "string",
+              "title": "string",
+              "kind": "string",
+              "poster": "string?",
+              "backdrop": "string?",
+              "year": "string?",
+              "overview": "string?",
+              "tmdb": "number?"
+            }
+          }
+        }
+      }
+    }
+  },
+  "signature": {
+    "authorKey": "6693946bd5c56196960959c4b9665fad5094374bcb85ddb282f8bf762c835263",
+    "value": "1b12926971a5f59a2870781d7b0b3c1394391def4aaccbed2031b8497ac489e1129233d6bf6cb5e77f3325206c5e093fb33ca3f6edb277551d63a30bc84a030c"
   }
 }
