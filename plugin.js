@@ -1012,7 +1012,8 @@ function browseView({ tab, data, recent, pending, failed, device = "phone" }) {
       mergeWithKinoBar: true,
       dense: true,
       divider: false,
-      leading: { type: "IconButton", key: "close", icon: "close", ...twin("brClose", "labelText"), ...twin("brClose", "tooltip"), onPressed: { go: { close: true } } },
+      // A back arrow, not an X, like the author's other plugins (owner, 2026-11-23): it leaves the screen.
+      leading: { type: "IconButton", key: "close", icon: "arrow_back", ...twin("brBack", "labelText"), ...twin("brBack", "tooltip"), onPressed: { go: { close: true } } },
       // On a TV the search is a button of the bar (a floating one is hard to reach with a remote); elsewhere it floats.
       actions: tv ? [{ type: "IconButton", key: "searchButton", icon: "search", ...twin("brSearch", "labelText"), ...twin("brSearch", "tooltip"), onPressed: "openSearch" }, gear] : [gear],
       // On a TV the tabs sit in the bar beside the logo (one D-pad strip); elsewhere they are pinned under it.
