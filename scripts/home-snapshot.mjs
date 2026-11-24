@@ -38,8 +38,8 @@ for (const tab of TAB_IDS) {
   const slides = rows.flatMap((r) => r.items).filter((i) => i.backdrop && i.overview && !seen.has(i.id) && seen.add(i.id)).slice(0, MAX_SLIDES);
   const all = slides.length ? [{ id: "slides", title: "Destacados", hidden: true, items: slides }, ...rows] : rows;
   usable++;
-  if (old && JSON.stringify(old.rows) === JSON.stringify(all) && Date.now() - Date.parse(old.at) < KEEP_MS) { console.log(`${tab}: unchanged`); continue; }
-  writeFileSync(file, JSON.stringify({ v: 1, tab, at: new Date().toISOString(), rows: all }) + "\n");
+  if (old && JSON.stringify(old.rows) === JSON.stringify(all) && Date.now() - Number(old.at) < KEEP_MS) { console.log(`${tab}: unchanged`); continue; }
+  writeFileSync(file, JSON.stringify({ v: 1, tab, at: Date.now(), rows: all }) + "\n");
   console.log(`${tab}: ${rows.length} rows, ${slides.length} slides`);
 }
 const index = { v: 1, tabs: TAB_IDS.map((id) => { const l = tabLabel(id); return { id, label: l.es, labelEn: l.en }; }) };
